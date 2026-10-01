@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feliz Primero de Octubre | Una Experiencia Romántica</title>
+    
+    <!-- External Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        night: '#0a0512',
+                        gothicBg: '#040208',
+                        goldGlow: '#d4af37',
+                        crimsonWine: '#6b0d2b',
+                        pumpkinOrange: '#d96b27',
+                        warmAmber: '#f0a843',
+                        darkPurple: '#180d2b'
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        garamond: ['Cormorant Garamond', 'serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                        montserrat: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --bg-night: #0a0512;
+            --bg-dark: #040208;
+            --accent-gold: #d4af37;
+            --accent-wine: #6b0d2b;
+            --accent-pumpkin: #d96b27;
+            --accent-amber: #f0a843;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #040208;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a1a4d;
+            border-radius: 4px;
+            border: 1px solid #d4af37;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b0d2b;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #e2d9eb;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        /* Gothic Frame Borders */
+        .gothic-border {
+            border: 2px solid var(--accent-gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2), inset 0 0 15px rgba(107, 13, 43, 0.4);
+            position: relative;
+        }
+
+        .gothic-border::before, .gothic-border::after {
+            content: "❖";
+            position: absolute;
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        .gothic-border::before { top: -8px; left: -8px; }
+        .gothic-border::after { bottom: -8px; right: -8px; }
+
+        /* Glowing Text Effects */
+        .text-glow-gold {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6), 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        .text-glow-amber {
+            text-shadow: 0 0 12px rgba(240, 168, 67, 0.7), 0 0 25px rgba(217, 107, 39, 0.4);
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 10px rgba(240,168,67,0.4)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 25px rgba(240,168,67,0.9)); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 3.5s ease-in-out infinite;
+        }
+
+        @keyframes flickerCandle {
+            0%, 100% { opacity: 0.9; transform: scale(1); }
+            25% { opacity: 0.7; transform: scale(0.96) skewX(-1deg); }
+            50% { opacity: 1; transform: scale(1.04) skewX(1deg); }
+            75% { opacity: 0.8; transform: scale(0.98); }
+        }
+        .flicker-flame {
+            animation: flickerCandle 1.8s infinite ease-in-out;
+            transform-origin: center bottom;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Intro Screen Overlay */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: #040208;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
+        }
+
+        /* Music Player Antique Box Style */
+        .music-box-card {
+            background: linear-gradient(145deg, #180a29, #080312);
+            border: 2px solid #d4af37;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(212,175,55,0.15);
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gothicBg text-slate-200 antialiased selection:bg-crimsonWine selection:text-goldGlow">
+
+    <!-- Background Canvas for Fog, Leaves & Stars -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- SECTION 1: PANTALLA DE ENTRADA / EFECTO DE OCTUBRE -->
+    <div id="intro-overlay" class="p-6 text-center">
+        <div class="max-w-md w-full space-y-6">
+            <div class="w-16 h-16 mx-auto mb-4 border-2 border-goldGlow rounded-full flex items-center justify-center animate-pulse-glow">
+                <span class="text-goldGlow text-2xl font-cinzel">01</span>
+            </div>
+            
+            <div id="typewriter-box" class="min-h-[120px] flex flex-col justify-center items-center">
+                <h2 id="typewriter-title" class="font-cinzel text-2xl sm:text-3xl text-goldGlow tracking-widest mb-2 font-bold min-h-[36px]"></h2>
+                <p id="typewriter-sub" class="font-garamond text-xl sm:text-2xl text-purple-200 italic min-h-[32px]"></p>
+                <p id="typewriter-main" class="font-playfair text-xl sm:text-2xl text-warmAmber font-semibold mt-2 min-h-[36px] text-glow-amber"></p>
+            </div>
+
+            <button id="btn-enter" class="hidden px-8 py-3 bg-crimsonWine hover:bg-red-900 text-goldGlow font-cinzel tracking-widest text-sm rounded-full border border-goldGlow shadow-lg transition-all transform hover:scale-105 active:scale-95">
+                ENTRAR A NUESTRO SEGUNDO OCTUBRE
+            </button>
+        </div>
+    </div>
+
+    <div class="content-layer">
+
+        <!-- SECTION 2: PORTADA / HERO CINEMATOGRÁFICO -->
+        <header class="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 text-center overflow-hidden">
+            <!-- Moon & Tim Burton Castle Artwork SVG -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 md:opacity-30">
+                <svg viewBox="0 0 800 800" class="w-[600px] h-[600px] max-w-full">
+                    <defs>
+                        <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#f0a843" stop-opacity="0.8"/>
+                            <stop offset="50%" stop-color="#d4af37" stop-opacity="0.3"/>
+                            <stop offset="100%" stop-color="#0a0512" stop-opacity="0"/>
+                        </radialGradient>
+                    </defs>
+                    <circle cx="400" cy="300" r="180" fill="url(#moonGlow)"/>
+                    <circle cx="400" cy="300" r="120" fill="#fceabb" opacity="0.9"/>
+                    <!-- Silhouette of Burton style hill & trees -->
+                    <path d="M 150 700 Q 400 450 650 700 Z" fill="#040208" />
+                    <!-- Twisted Tree -->
+                    <path d="M 380 500 Q 370 420 340 380 Q 320 360 300 370 M 340 380 Q 360 340 390 320 M 380 500 L 400 500 Q 410 440 430 400" stroke="#040208" stroke-width="8" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <div class="relative z-10 max-w-4xl mx-auto space-y-6">
+                <span class="inline-block px-4 py-1 border border-goldGlow/40 rounded-full text-xs font-cinzel tracking-widest text-goldGlow bg-darkPurple/60 backdrop-blur-sm">
+                    1 DE OCTUBRE · NUESTRO SEGUNDO AÑO
+                </span>
+
+                <h1 class="font-cinzel text-4xl sm:text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-goldGlow via-amber-200 to-goldGlow tracking-wider drop-shadow-lg">
+                    Feliz Primero de Octubre
+                </h1>
+
+                <p class="font-garamond text-2xl sm:text-3xl text-purple-200 italic font-semibold max-w-2xl mx-auto">
+                    Que comience nuestro mes favorito y nuestra cuenta regresiva...
+                </p>
+
+                <div class="w-32 h-0.5 mx-auto bg-gradient-to-r from-transparent via-goldGlow to-transparent my-6"></div>
+
+                <p class="font-playfair text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed px-4">
+                    "Entre hojas que caen, noches que llegan temprano y la emoción de escuchar a tus ídolos, quiero que este segundo octubre tenga la mejor melodía para nosotros."
+                </p>
+
+                <div class="pt-10">
+                    <a href="#section-music1" class="inline-flex items-center space-x-2 text-goldGlow font-cinzel text-xs tracking-widest hover:text-amber-300 transition-colors">
+                        <span>DESLIZA PARA COMENZAR</span>
+                        <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7-7-7"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECTION 3: REPRODUCTOR DE LA PRIMERA CANCIÓN -->
+        <section id="section-music1" class="py-20 px-4 max-w-3xl mx-auto">
+            <div class="music-box-card rounded-2xl p-6 sm:p-10 gothic-border text-center space-y-6">
+                <div class="space-y-2">
+                    <span class="text-xs font-cinzel tracking-widest text-pumpkinOrange uppercase">Caja Musical Antigua</span>
+                    <h2 class="font-cinzel text-2xl sm:text-3xl text-goldGlow font-bold">Una canción para comenzar octubre</h2>
+                    <p class="font-garamond text-lg text-purple-300 italic">"Presiona play y deja que nuestro mes inicie..."</p>
+                </div>
+
+                <!-- Animated Gear Icon / Visualizer -->
+                <div class="w-24 h-24 mx-auto flex items-center justify-center relative">
+                    <div id="gear-visualizer" class="w-20 h-20 border-4 border-dashed border-goldGlow/60 rounded-full flex items-center justify-center transition-all duration-700">
+                        <svg class="w-10 h-10 text-warmAmber" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0pt"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Audio Track info -->
+                <div class="space-y-1">
+                    <p id="player1-title" class="font-cinzel text-lg text-goldGlow">Melodía Nocturna de Octubre</p>
+                    <p class="text-xs text-slate-400 font-montserrat">media/octubre.mp3</p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="space-y-2 max-w-md mx-auto">
+                    <input id="player1-seek" type="range" min="0" max="100" value="0" class="w-full accent-goldGlow cursor-pointer bg-darkPurple h-1.5 rounded-lg">
+                    <div class="flex justify-between text-xs text-slate-400 font-mono">
+                        <span id="player1-time-curr">00:00</span>
+                        <span id="player1-time-dur">03:30</span>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex items-center justify-center space-x-6">
+                    <button id="player1-btn-play" class="w-14 h-14 rounded-full bg-crimsonWine hover:bg-red-800 border-2 border-goldGlow flex items-center justify-center text-goldGlow shadow-lg transform active:scale-95 transition-all">
+                        <svg id="player1-icon-play" class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg id="player1-icon-pause" class="w-6 h-6 fill-current hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-goldGlow" fill="currentColor" viewBox="0 0 20 20"><path d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414z"/></svg>
+                        <input id="player1-vol" type="range" min="0" max="1" step="0.05" value="0.8" class="w-20 accent-goldGlow bg-darkPurple h-1 rounded">
+                    </div>
+                </div>
+
+                <!-- Hidden audio tag with synthesis fallback -->
+                <audio id="audio1" src="media/octubre.mp3" preload="auto"></audio>
+            </div>
+        </section>
+
+        <!-- SECTION 4: CARTA DE OCTUBRE -->
+        <section class="py-20 px-4 max-w-3xl mx-auto">
+            <div class="relative bg-[#12081f] p-8 sm:p-12 rounded-lg border-2 border-goldGlow/60 shadow-2xl space-y-6">
+                <!-- Antique Parchment Decoration Header -->
+                <div class="text-center space-y-2 border-b border-goldGlow/30 pb-6">
+                    <span class="font-cinzel text-xs text-warmAmber tracking-widest uppercase">Pergamino de Otoño</span>
+                    <h2 class="font-playfair text-3xl sm:text-4xl text-goldGlow font-bold">Para ti, en nuestro segundo octubre</h2>
+                </div>
+
+                <div class="font-garamond text-xl sm:text-2xl text-slate-200 leading-relaxed space-y-6 text-justify">
+                    <p>
+                        Feliz primero de octubre, <span class="text-warmAmber font-semibold">mi vida</span>. Hoy le damos la bienvenida por segunda vez a este mes juntos, un mes que siempre guarda una magia distinta, una atmósfera donde el viento sopla más frío y las noches parecen invitar a buscar refugio en la calidez de quienes más amamos.
+                    </p>
+                    <p>
+                        Con la llegada de octubre no solo se acercan las luces tenues y esa atmósfera otoñal que tanto nos gusta, sino que también marca la cuenta regresiva para uno de tus sueños más grandes. A solo un día del concierto de BTS, verte tan feliz y emocionada hace que este mes sea infinitamente mejor.
+                    </p>
+                    <p>
+                        Eres mi persona favorita, <span class="text-warmAmber font-semibold">mi reina hermosa colombiana</span>. No hace falta esperar una fecha perfecta en el calendario para recordarte lo mucho que significas para mí, pero celebrar este primer día de nuestro mes predilecto es la excusa más hermosa para abrazarte fuerte y comenzar a tejer nuevos recuerdos juntas.
+                    </p>
+                    <p class="text-right italic font-playfair text-goldGlow pt-4">
+                        Con todo mi corazón,<br>
+                        Para <span class="text-warmAmber">mi bella damita</span>, en esta hermosa noche de octubre.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: APODOS AUTORIZADOS -->
+        <section class="py-20 px-4 max-w-5xl mx-auto">
+            <div class="text-center space-y-4 mb-12">
+                <h2 class="font-cinzel text-3xl sm:text-4xl text-goldGlow font-bold tracking-wider">Palabras Dedicadas</h2>
+                <p class="font-garamond text-xl text-purple-300 italic">Cada apodo guarda un motivo para quererte aún más...</p>
+            </div>
+
+            <!-- Grid of 11 exact authorized nicknames -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="nicknames-grid">
+                <!-- Nickname cards populated via JS or rendered pure HTML -->
+            </div>
+        </section>
+
+        <!-- SECTION 6: FRASES CINEMATOGRÁFICAS -->
+        <section class="py-20 px-4 max-w-6xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <span class="text-xs font-cinzel tracking-widest text-pumpkinOrange uppercase">Inspiración de Cine Oscuro & Romántico</span>
+                <h2 class="font-cinzel text-3xl sm:text-5xl text-goldGlow font-bold">Como en una película...</h2>
+                <p class="font-garamond text-xl text-purple-200 italic max-w-2xl mx-auto">
+                    Frases nacidas de noches de luna, sombras elegantes y promesas eternas.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="cinema-phrases-grid">
+                <!-- 10 Original Gothic Romantic Phrases -->
+            </div>
+        </section>
+
+        <!-- SECTION 7: TIM BURTON / ESTÉTICA GÓTICA ROMÁNTICA INTERACTIVA -->
+        <section class="py-20 px-4 max-w-4xl mx-auto">
+            <div class="bg-darkPurple/80 border-2 border-goldGlow/40 rounded-2xl p-8 text-center space-y-8 gothic-border">
+                <div class="space-y-2">
+                    <h2 class="font-cinzel text-2xl sm:text-3xl text-goldGlow">Encantos de la Noche</h2>
+                    <p class="font-garamond text-lg text-purple-300 italic">Toca las velas para encender sus llamas en la oscuridad...</p>
+                </div>
+
+                <!-- Interactive Candle Candelabra -->
+                <div class="flex justify-center items-end space-x-8 py-6">
+                    <!-- Candle 1 -->
+                    <div class="candle-item cursor-pointer flex flex-col items-center group" onclick="toggleCandle(this)">
+                        <div class="flame-glow w-6 h-8 bg-gradient-to-t from-pumpkinOrange via-warmAmber to-yellow-100 rounded-full flicker-flame mb-1 transition-opacity duration-500 shadow-[0_0_15px_#f0a843]"></div>
+                        <div class="w-5 h-24 bg-gradient-to-r from-amber-100 via-stone-200 to-amber-200 rounded-t-sm border-t border-amber-300"></div>
+                        <div class="w-10 h-3 bg-goldGlow rounded-full"></div>
+                    </div>
+                    <!-- Candle 2 (Center Tall) -->
+                    <div class="candle-item cursor-pointer flex flex-col items-center group" onclick="toggleCandle(this)">
+                        <div class="flame-glow w-7 h-10 bg-gradient-to-t from-pumpkinOrange via-warmAmber to-yellow-100 rounded-full flicker-flame mb-1 transition-opacity duration-500 shadow-[0_0_20px_#f0a843]"></div>
+                        <div class="w-6 h-32 bg-gradient-to-r from-amber-100 via-stone-200 to-amber-200 rounded-t-sm border-t border-amber-300"></div>
+                        <div class="w-12 h-4 bg-goldGlow rounded-full"></div>
+                    </div>
+                    <!-- Candle 3 -->
+                    <div class="candle-item cursor-pointer flex flex-col items-center group" onclick="toggleCandle(this)">
+                        <div class="flame-glow w-6 h-8 bg-gradient-to-t from-pumpkinOrange via-warmAmber to-yellow-100 rounded-full flicker-flame mb-1 transition-opacity duration-500 shadow-[0_0_15px_#f0a843]"></div>
+                        <div class="w-5 h-24 bg-gradient-to-r from-amber-100 via-stone-200 to-amber-200 rounded-t-sm border-t border-amber-300"></div>
+                        <div class="w-10 h-3 bg-goldGlow rounded-full"></div>
+                    </div>
+                </div>
+
+                <p id="candle-status" class="text-sm font-cinzel text-warmAmber tracking-wide">Las velas iluminan nuestro camino de octubre</p>
+            </div>
+        </section>
+
+        <!-- SECTION 8: CONTADOR / MOMENTO ESPECIAL -->
+        <section class="py-20 px-4 text-center max-w-2xl mx-auto">
+            <div class="space-y-6">
+                <span class="text-xs font-cinzel tracking-widest text-goldGlow uppercase">Reloj de Octubre</span>
+                <h2 class="font-cinzel text-3xl text-purple-200">Octubre acaba de comenzar...</h2>
+
+                <!-- Antique Pocket Clock Display -->
+                <div class="w-48 h-48 mx-auto border-4 border-goldGlow rounded-full bg-gothicBg flex flex-col items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.3)] relative">
+                    <span class="font-cinzel text-5xl font-extrabold text-goldGlow tracking-widest">01 · 10</span>
+                    <span class="text-xs font-garamond text-amber-200/80 mt-1">PRIMERO DE OCTUBRE</span>
+                </div>
+
+                <p class="font-garamond text-2xl text-slate-300 italic">
+                    "Un nuevo mes para seguir creando recuerdos."
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 9: SECCIÓN "SI OCTUBRE FUERA UNA HISTORIA" -->
+        <section class="py-20 px-4 max-w-4xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="font-cinzel text-3xl sm:text-4xl text-goldGlow font-bold">Si octubre fuera una historia</h2>
+                <p class="font-garamond text-xl text-purple-300 italic">Cinco escenas de un cuento que escribimos juntos...</p>
+            </div>
+
+            <div class="relative border-l-2 border-goldGlow/40 ml-4 sm:ml-32 space-y-12 pl-6 sm:pl-10">
+                <!-- ESCENA I -->
+                <div class="relative group">
+                    <div class="absolute -left-[31px] sm:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-crimsonWine border-2 border-goldGlow"></div>
+                    <span class="font-cinzel text-xs text-pumpkinOrange tracking-widest">ESCENA I</span>
+                    <h3 class="font-playfair text-2xl text-goldGlow font-semibold">La primera noche de octubre</h3>
+                    <p class="font-garamond text-xl text-slate-300 mt-2 italic leading-relaxed">
+                        "Cuando el viento cambia de aliento y la luna se viste de oro, descubro nuevamente que el mejor lugar del mundo es a tu lado."
+                    </p>
+                </div>
+
+                <!-- ESCENA II -->
+                <div class="relative group">
+                    <div class="absolute -left-[31px] sm:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-crimsonWine border-2 border-goldGlow"></div>
+                    <span class="font-cinzel text-xs text-pumpkinOrange tracking-widest">ESCENA II</span>
+                    <h3 class="font-playfair text-2xl text-goldGlow font-semibold">Bajo la luna</h3>
+                    <p class="font-garamond text-xl text-slate-300 mt-2 italic leading-relaxed">
+                        "Las sombras bailan en las paredes y la noche envuelve la tierra, pero en tus ojos solo veo la luz dorada que ilumina mi camino."
+                    </p>
+                </div>
+
+                <!-- ESCENA III -->
+                <div class="relative group">
+                    <div class="absolute -left-[31px] sm:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-crimsonWine border-2 border-goldGlow"></div>
+                    <span class="font-cinzel text-xs text-pumpkinOrange tracking-widest">ESCENA III</span>
+                    <h3 class="font-playfair text-2xl text-goldGlow font-semibold">A un día de tu sueño</h3>
+                    <p class="font-garamond text-xl text-slate-300 mt-2 italic leading-relaxed">
+                        "Verte preparar todo para tu concierto, verte tan radiante, me hace darme cuenta de lo mucho que me fascina acompañarte en tus metas."
+                    </p>
+                </div>
+
+                <!-- ESCENA IV -->
+                <div class="relative group">
+                    <div class="absolute -left-[31px] sm:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-crimsonWine border-2 border-goldGlow"></div>
+                    <span class="font-cinzel text-xs text-pumpkinOrange tracking-widest">ESCENA IV</span>
+                    <h3 class="font-playfair text-2xl text-goldGlow font-semibold">Cuando llega Halloween</h3>
+                    <p class="font-garamond text-xl text-slate-300 mt-2 italic leading-relaxed">
+                        "Entre misterios, faroles de calabaza y encantos del velo nocturno, mi único deseo constante sigue siendo tu compañía."
+                    </p>
+                </div>
+
+                <!-- ESCENA V -->
+                <div class="relative group">
+                    <div class="absolute -left-[31px] sm:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-crimsonWine border-2 border-goldGlow"></div>
+                    <span class="font-cinzel text-xs text-pumpkinOrange tracking-widest">ESCENA V</span>
+                    <h3 class="font-playfair text-2xl text-goldGlow font-semibold">Y nosotros seguimos aquí</h3>
+                    <p class="font-garamond text-xl text-slate-300 mt-2 italic leading-relaxed">
+                        "El tiempo transcurre, las estaciones cambian, pero la promesa de quererte permanece intacta en nuestro segundo año de octubre."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 10: GALERÍA DE LOGROS BTS -->
+        <section class="py-20 px-4 max-w-6xl mx-auto">
+            <div class="text-center space-y-4 mb-12">
+                <span class="text-xs font-cinzel tracking-widest text-goldGlow uppercase">Cuenta Regresiva</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl text-goldGlow font-bold">Camino a BTS World Tour</h2>
+                <p class="font-garamond text-xl text-purple-300 italic">Tus mayores logros antes del gran día... Toca una imagen para contemplarla en detalle.</p>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Logro 1 -->
+                <div class="group relative overflow-hidden rounded-xl border-2 border-goldGlow/50 shadow-xl cursor-pointer bg-darkPurple" onclick="openLightbox('media/foto1.png', 'Outfit Evento K-POP')">
+                    <img src="media/foto1.png" alt="Outfit K-POP" class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gothicBg via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                    <span class="absolute bottom-4 left-4 font-cinzel text-xs text-goldGlow tracking-widest">LOGRO 01 · OUTFIT K-POP</span>
+                </div>
+
+                <!-- Logro 2 -->
+                <div class="group relative overflow-hidden rounded-xl border-2 border-goldGlow/50 shadow-xl cursor-pointer bg-darkPurple" onclick="openLightbox('media/foto2.png', 'Entrada BTS World Tour')">
+                    <img src="media/foto2.png" alt="Entrada BTS World Tour" class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gothicBg via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                    <span class="absolute bottom-4 left-4 font-cinzel text-xs text-goldGlow tracking-widest">LOGRO 02 · TICKET AL CONCIERTO</span>
+                </div>
+
+                <!-- Logro 3 -->
+                <div class="group relative overflow-hidden rounded-xl border-2 border-goldGlow/50 shadow-xl cursor-pointer bg-darkPurple" onclick="openLightbox('media/foto3.png', 'ARMY Membership')">
+                    <img src="media/foto3.png" alt="ARMY Membership" class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gothicBg via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                    <span class="absolute bottom-4 left-4 font-cinzel text-xs text-goldGlow tracking-widest">LOGRO 03 · ARMY MEMBERSHIP</span>
+                </div>
+
+                <!-- Logro 4 -->
+                <div class="group relative overflow-hidden rounded-xl border-2 border-goldGlow/50 shadow-xl cursor-pointer bg-darkPurple" onclick="openLightbox('media/foto4.png', 'Army Bomb')">
+                    <img src="media/foto4.png" alt="Army Bomb" class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gothicBg via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                    <span class="absolute bottom-4 left-4 font-cinzel text-xs text-goldGlow tracking-widest">LOGRO 04 · ARMY BOMB</span>
+                </div>
+
+                <!-- Logro 5 -->
+                <div class="group relative overflow-hidden rounded-xl border-2 border-goldGlow/50 shadow-xl cursor-pointer bg-darkPurple sm:col-span-2 lg:col-span-2 justify-self-center w-full max-w-md lg:max-w-none" onclick="openLightbox('media/foto5.png', 'iPhone 15 Pro Max')">
+                    <img src="media/foto5.png" alt="iPhone 15 Pro Max" class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gothicBg via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                    <span class="absolute bottom-4 left-4 font-cinzel text-xs text-goldGlow tracking-widest">LOGRO 05 · IPHONE 15 PRO MAX</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Modal Lightbox -->
+        <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-4" onclick="closeLightbox()">
+            <div class="relative max-w-3xl w-full" onclick="event.stopPropagation()">
+                <button onclick="closeLightbox()" class="absolute -top-10 right-0 text-goldGlow font-cinzel text-xl hover:text-white">&times; CERRAR</button>
+                <img id="lightbox-img" src="" alt="Vista ampliada" class="w-full h-auto max-h-[80vh] object-contain rounded-lg border-2 border-goldGlow">
+            </div>
+        </div>
+
+        <!-- SECTION 11: SECCIÓN FINAL DE OCTUBRE -->
+        <section class="py-20 px-4 max-w-3xl mx-auto text-center space-y-8">
+            <span class="text-xs font-cinzel tracking-widest text-pumpkinOrange uppercase">Reflexión Nocturna</span>
+            <h2 class="font-cinzel text-3xl sm:text-4xl text-goldGlow font-bold">Y si octubre pudiera decirte algo...</h2>
+
+            <div class="space-y-6 font-garamond text-2xl text-slate-200 italic leading-relaxed bg-darkPurple/40 p-8 rounded-xl border border-goldGlow/30">
+                <p class="hover:text-warmAmber transition-colors duration-300">"Gracias por existir en mi historia."</p>
+                <p class="hover:text-warmAmber transition-colors duration-300">"Que este mes nos encuentre juntos en cada pequeño momento."</p>
+                <p class="hover:text-warmAmber transition-colors duration-300">"Que disfrutes al máximo el concierto de tus sueños, estaré apoyándote siempre."</p>
+                <p class="text-goldGlow font-semibold hover:text-amber-300 transition-colors duration-300">"Feliz primero de octubre, mi princesa."</p>
+                <p class="text-goldGlow font-semibold hover:text-amber-300 transition-colors duration-300">"Feliz primero de octubre, mi linda mujer."</p>
+            </div>
+        </section>
+
+        <!-- SECTION 12 & 13: ESCENA FINAL CON JAVASCRIPT Y SEGUNDA CANCIÓN -->
+        <section id="final-scene-section" class="relative min-h-screen py-20 px-4 flex flex-col items-center justify-center text-center bg-gradient-to-b from-gothicBg via-night to-gothicBg overflow-hidden">
+            
+            <!-- Night Sky & Sprouting Pumpkins Visual Container -->
+            <div class="max-w-4xl w-full space-y-12 relative z-10">
+                
+                <div class="space-y-4">
+                    <h2 class="font-cinzel text-3xl sm:text-5xl text-goldGlow font-bold text-glow-gold">
+                        Y así comienza nuestro segundo octubre...
+                    </h2>
+                    <p class="font-garamond text-2xl sm:text-3xl text-purple-200 italic max-w-2xl mx-auto">
+                        "Mi amor, si este mes fuera una película, elegiría vivir cada escena contigo y cantando a todo pulmón tus canciones favoritas."
+                    </p>
+                </div>
+
+                <!-- Animated Interactive Pumpkins SVG Stage -->
+                <div id="pumpkins-stage" class="flex flex-wrap justify-center items-end gap-6 min-h-[160px] py-6">
+                    <!-- Sprouted pumpkins via JS -->
+                </div>
+
+                <!-- MUSIC PLAYER 2: BTS / LAST SONG -->
+                <div class="music-box-card rounded-2xl p-6 sm:p-10 gothic-border max-w-xl mx-auto space-y-6">
+                    <div class="space-y-2">
+                        <span class="text-xs font-cinzel tracking-widest text-goldGlow uppercase">Melodía Especial</span>
+                        <h3 class="font-cinzel text-2xl text-goldGlow font-bold">Una última canción antes de tu gran día...</h3>
+                        <p class="text-xs text-slate-400 font-montserrat">media/bts.mp3</p>
+                    </div>
+
+                    <button id="btn-play-bts" class="px-8 py-4 bg-crimsonWine hover:bg-red-800 text-goldGlow font-cinzel text-sm tracking-widest rounded-full border-2 border-goldGlow shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center mx-auto space-x-3">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <span>REPRODUCIR CANCIÓN DE BTS</span>
+                    </button>
+
+                    <audio id="audio2" src="media/bts.mp3" preload="auto"></audio>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 14: FRASES FINALES CON TRANSICIÓN AUTOMÁTICA -->
+        <section class="py-20 px-4 max-w-3xl mx-auto text-center min-h-[250px] flex items-center justify-center">
+            <div id="final-quotes-carousel" class="transition-opacity duration-1000 ease-in-out">
+                <p id="final-quote-text" class="font-garamond text-2xl sm:text-3xl text-goldGlow italic leading-relaxed">
+                    "Hay historias que terminan cuando cae el telón; la nuestra apenas está escribiendo otra página en este segundo año."
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 15: MENSAJE FINAL -->
+        <footer class="py-28 px-4 text-center border-t border-goldGlow/20 bg-gothicBg">
+            <div class="max-w-2xl mx-auto space-y-8">
+                <h2 class="font-cinzel text-4xl sm:text-5xl text-goldGlow font-extrabold tracking-widest text-glow-gold">
+                    Feliz primero de octubre, mi amor.
+                </h2>
+                
+                <p class="font-garamond text-2xl text-purple-200 italic">
+                    Que este sea solamente el comienzo de otro mes lleno de nosotros, y que disfrutes mañana de ese concierto que tanto soñaste.
+                </p>
+
+                <div class="pt-6">
+                    <p class="font-playfair text-3xl text-warmAmber font-bold text-glow-amber tracking-wider">
+                        TE AMO MUCHO.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT INTERACTIVE LOGIC -->
+    <script>
+        // STRICT AUTHORIZED NICKNAMES DATA
+        const AUTHORIZED_NICKNAMES = [
+            { name: "amor", phrase: "En cada rincón de este mes de octubre, tu nombre es mi canción favorita." },
+            { name: "mi vida", phrase: "Gracias por iluminar mis noches frías con la tibieza de tu presencia." },
+            { name: "cariño", phrase: "Un refugio perfecto en medio del viento y las hojas que caen suavemente." },
+            { name: "mi cielo", phrase: "Bajo este firmamento lleno de estrellas, tú eres la única luz que observo." },
+            { name: "mi reina", phrase: "Gobiernas mi corazón con la dulzura de tus palabras y la elegancia de tu sonrisa." },
+            { name: "mi mujer", phrase: "Orgulloso de caminar a tu lado en esta y en cada una de las estaciones." },
+            { name: "mi princesa", phrase: "Un cuento de hadas gótico no estaría completo sin el misterio hermoso de tu mirada." },
+            { name: "mi bella damita", phrase: "Elegante, misteriosa y encantadora; no existe en este mundo alguien como tú." },
+            { name: "mi amorshita", phrase: "Pequeños detalles como abrazarte hacen que el otoño sea la estación más cálida." },
+            { name: "mi amorcita", phrase: "Cada latido mío susurra tu nombre en la quietud de las noches de octubre." },
+            { name: "mi linda mujer", phrase: "La belleza del otoño palidece cuando apareces con tu sonrisa infinita." }
+        ];
+
+        // 10 ORIGINAL CINEMATOGRAPHIC GOTHIC PHRASES
+        const CINEMA_PHRASES = [
+            "Hay amores que no necesitan un castillo para sentirse eternos; basta con encontrar a alguien con quien hasta la noche más oscura parezca hermosa.",
+            "Si nuestro destino estuviera escrito en un antiguo libro gótico, juraría que cada capítulo llevaría grabado el reflejo de tu mirada.",
+            "Ni el viento helado de octubre ni la niebla más densa podrían apagar la cálida llama que encendiste en mi pecho.",
+            "Dicen que las estrellas brillan en secreto, pero mi amor por ti resplandece incluso a plena luz de la luna llena.",
+            "Caminar contigo bajo la sombra de la noche es descubrir que el misterio más dulce se oculta en tu sonrisa.",
+            "Si la eternidad fuera una melodía de caja de música, quisiera escucharla en bucle solo si es a tu lado.",
+            "En este mundo de sombras y luces de calabaza, tú eres la única certeza que mi alma reconoce.",
+            "No le temo a la noche ni al paso del tiempo; le temo a un solo instante de existencia donde no estés tú.",
+            "Entre hojas secas y veladas románticas, te elegiría a ti en esta vida, en la siguiente y en todas las sombras del tiempo.",
+            "Tu amor es como una suave melodía de medianoche: tranquila, inmortal y capaz de iluminar hasta el rincón más oscuro."
+        ];
+
+        // 10 FINAL SLIDESHOW QUOTES
+        const FINAL_QUOTES = [
+            "Hay historias que terminan cuando cae el telón; la nuestra apenas está escribiendo otra página en este segundo año.",
+            "Quizá el amor no necesite eternidad, sino suficientes momentos para hacer que cada segundo valga la pena.",
+            "Entre la oscuridad de la noche siempre existe una luz cuando tienes a alguien especial a tu lado.",
+            "No hay hechizo más poderoso ni magia más antigua que el simple calor de tu mano entre las mías.",
+            "Que la luna sea testigo de que cada pensamiento nocturno me lleva inevitablemente hacia ti.",
+            "En el gran teatro de la noche de octubre, tu presencia es la escena que nunca quiero que termine.",
+            "Ni los fantasmas del pasado ni las incertidumbres del futuro pueden opacar lo que siento hoy por ti.",
+            "Escribir nuestro amor en este mes de misterio es recordar que los mejores milagros ocurren en el silencio de la noche.",
+            "Un susurro al viento de otoño basta para recordarle al universo entero lo mucho que te amo.",
+            "Contigo, la noche no es el final del día, sino el escenario perfecto donde florece nuestro amor."
+        ];
+
+        // TYPEWRITER INITIALIZATION
+        window.addEventListener('DOMContentLoaded', () => {
+            renderNicknamesGrid();
+            renderCinemaPhrases();
+            startIntroTypewriter();
+            initCanvasParticles();
+            initAudioPlayers();
+            initPumpkinsStage();
+            initFinalCarousel();
+        });
+
+        function startIntroTypewriter() {
+            const titleEl = document.getElementById('typewriter-title');
+            const subEl = document.getElementById('typewriter-sub');
+            const mainEl = document.getElementById('typewriter-main');
+            const btnEl = document.getElementById('btn-enter');
+
+            typeText(titleEl, "01 / OCTOBER", 80, () => {
+                setTimeout(() => {
+                    typeText(subEl, "Nuestro segundo octubre juntos...", 60, () => {
+                        setTimeout(() => {
+                            typeText(mainEl, "Feliz primero de octubre, mi amor.", 60, () => {
+                                btnEl.classList.remove('hidden');
+                                btnEl.addEventListener('click', closeIntroOverlay);
+                            });
+                        }, 500);
+                    });
+                }, 400);
+            });
+        }
+
+        function typeText(element, text, speed, callback) {
+            let i = 0;
+            element.textContent = "";
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    if (callback) callback();
+                }
+            }, speed);
+        }
+
+        function closeIntroOverlay() {
+            const overlay = document.getElementById('intro-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.visibility = 'hidden';
+            }, 1500);
+        }
+
+        function renderNicknamesGrid() {
+            const container = document.getElementById('nicknames-grid');
+            container.innerHTML = AUTHORIZED_NICKNAMES.map(item => `
+                <div class="bg-darkPurple/60 border border-goldGlow/40 rounded-xl p-6 gothic-border transition-all duration-300 hover:scale-105 hover:border-goldGlow">
+                    <span class="font-cinzel text-xs text-pumpkinOrange tracking-widest uppercase">APODO DE AMOR</span>
+                    <h3 class="font-playfair text-2xl text-goldGlow font-bold mt-1 text-glow-gold">"${item.name}"</h3>
+                    <p class="font-garamond text-lg text-slate-300 mt-3 italic leading-relaxed">
+                        ${item.phrase}
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        function renderCinemaPhrases() {
+            const container = document.getElementById('cinema-phrases-grid');
+            container.innerHTML = CINEMA_PHRASES.map((phrase, index) => `
+                <div class="bg-darkPurple/40 border-l-4 border-goldGlow p-6 rounded-r-xl shadow-lg hover:bg-darkPurple/80 transition-colors">
+                    <span class="font-cinzel text-xs text-amber-300 tracking-widest">ESCENA ROMÁNTICA 0${index + 1}</span>
+                    <p class="font-garamond text-xl text-slate-200 italic mt-2 leading-relaxed">
+                        "${phrase}"
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        function toggleCandle(element) {
+            const flame = element.querySelector('.flame-glow');
+            const statusText = document.getElementById('candle-status');
+            if (flame.style.opacity === '0') {
+                flame.style.opacity = '1';
+                statusText.textContent = "Las velas iluminan nuestro camino de octubre";
+            } else {
+                flame.style.opacity = '0';
+                statusText.textContent = "Has apagado una vela en la penumbra...";
+            }
+        }
+
+        function openLightbox(src, alt) {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            img.alt = alt;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        let speedMultiplier = 1;
+
+        function initCanvasParticles() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            const particles = [];
+            const particleCount = window.innerWidth < 640 ? 35 : 70;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 4 + 2,
+                    speedY: Math.random() * 1 + 0.5,
+                    speedX: Math.sin(Math.random() * Math.PI) * 0.5,
+                    rotation: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 2,
+                    color: Math.random() > 0.5 ? '#d96b27' : '#d4af37',
+                    type: Math.random() > 0.6 ? 'leaf' : 'star'
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(p => {
+                    p.y += p.speedY * speedMultiplier;
+                    p.x += p.speedX;
+                    p.rotation += p.rotSpeed;
+
+                    if (p.y > canvas.height) {
+                        p.y = -10;
+                        p.x = Math.random() * canvas.width;
+                    }
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+
+                    if (p.type === 'leaf') {
+                        ctx.fillStyle = p.color;
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, p.size * 2, p.size, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else {
+                        ctx.fillStyle = '#f0a843';
+                        ctx.shadowBlur = 8;
+                        ctx.shadowColor = '#f0a843';
+                        ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                    }
+
+                    ctx.restore();
+                });
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function initAudioPlayers() {
+            // Player 1
+            const audio1 = document.getElementById('audio1');
+            const btnPlay1 = document.getElementById('player1-btn-play');
+            const iconPlay1 = document.getElementById('player1-icon-play');
+            const iconPause1 = document.getElementById('player1-icon-pause');
+            const seek1 = document.getElementById('player1-seek');
+            const timeCurr1 = document.getElementById('player1-time-curr');
+            const timeDur1 = document.getElementById('player1-time-dur');
+            const vol1 = document.getElementById('player1-vol');
+            const gear = document.getElementById('gear-visualizer');
+
+            let synthActive1 = false;
+            let synthInterval1 = null;
+
+            btnPlay1.addEventListener('click', () => {
+                if (audio1.paused) {
+                    audio1.play().then(() => {
+                        updateUIPlay1(true);
+                    }).catch(() => {
+                        // Play Synthesizer Romantic Music Box Fallback if MP3 is missing locally
+                        playSynthMelody1();
+                        updateUIPlay1(true);
+                    });
+                } else {
+                    audio1.pause();
+                    stopSynthMelody1();
+                    updateUIPlay1(false);
+                }
+            });
+
+            function updateUIPlay1(isPlaying) {
+                if (isPlaying) {
+                    iconPlay1.classList.add('hidden');
+                    iconPause1.classList.remove('hidden');
+                    gear.classList.add('animate-spin');
+                } else {
+                    iconPlay1.classList.remove('hidden');
+                    iconPause1.classList.add('hidden');
+                    gear.classList.remove('animate-spin');
+                }
+            }
+
+            audio1.addEventListener('timeupdate', () => {
+                if (audio1.duration) {
+                    const pct = (audio1.currentTime / audio1.duration) * 100;
+                    seek1.value = pct;
+                    timeCurr1.textContent = formatTime(audio1.currentTime);
+                    timeDur1.textContent = formatTime(audio1.duration);
+                }
+            });
+
+            vol1.addEventListener('input', (e) => {
+                audio1.volume = e.target.value;
+            });
+
+            // Music Box Synth Melody Fallback 1
+            let audioCtx = null;
+            function playSynthMelody1() {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                synthActive1 = true;
+                const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+                let noteIdx = 0;
+
+                synthInterval1 = setInterval(() => {
+                    if (!synthActive1) return;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 1.2);
+                    noteIdx++;
+                }, 500);
+            }
+
+            function stopSynthMelody1() {
+                synthActive1 = false;
+                if (synthInterval1) clearInterval(synthInterval1);
+            }
+
+            // Player 2 - BTS Song
+            const audio2 = document.getElementById('audio2');
+            const btnPlayBTS = document.getElementById('btn-play-bts');
+
+            btnPlayBTS.addEventListener('click', () => {
+                audio2.play().then(() => {
+                    activateMusic2VisualEffects();
+                }).catch(() => {
+                    // Fallback synthesized chime
+                    playSynthMelody1();
+                    activateMusic2VisualEffects();
+                });
+            });
+
+            function activateMusic2VisualEffects() {
+                speedMultiplier = 2.5; // Accelerate particle rain
+                // Pulse pumpkins
+                const svgPumpkins = document.querySelectorAll('.pumpkin-svg');
+                svgPumpkins.forEach(p => p.classList.add('animate-pulse-glow'));
+            }
+
+            function formatTime(secs) {
+                const m = Math.floor(secs / 60);
+                const s = Math.floor(secs % 60);
+                return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+            }
+        }
+
+        function initPumpkinsStage() {
+            const stage = document.getElementById('pumpkins-stage');
+            const pumpkinSizes = [50, 70, 85, 65, 55];
+
+            pumpkinSizes.forEach((size, idx) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = "transition-all duration-700 transform scale-0 animate-float";
+                    div.style.animationDelay = `${idx * 0.4}s`;
+                    div.innerHTML = `
+                        <svg class="pumpkin-svg text-pumpkinOrange drop-shadow-[0_0_15px_#d96b27]" width="${size}" height="${size}" viewBox="0 0 100 100">
+                            <!-- Pumpkin Body -->
+                            <ellipse cx="50" cy="55" rx="40" ry="32" fill="#d96b27"/>
+                            <ellipse cx="38" cy="55" rx="25" ry="32" fill="#e0752b"/>
+                            <ellipse cx="62" cy="55" rx="25" ry="32" fill="#c95f1e"/>
+                            <ellipse cx="50" cy="55" rx="18" ry="32" fill="#f08132"/>
+                            <!-- Stem -->
+                            <path d="M 47 25 Q 50 12 58 10 Q 55 22 53 25 Z" fill="#2d5a27"/>
+                            <!-- Glowing Carved Eyes & Smile -->
+                            <polygon points="32,45 42,45 37,36" fill="#f0a843"/>
+                            <polygon points="58,45 68,45 63,36" fill="#f0a843"/>
+                            <path d="M 30 65 Q 50 78 70 65 Q 60 70 50 70 Q 40 70 30 65 Z" fill="#f0a843"/>
+                        </svg>
+                    `;
+                    stage.appendChild(div);
+                    setTimeout(() => div.classList.remove('scale-0'), 50);
+                }, idx * 600);
+            });
+        }
+
+        function initFinalCarousel() {
+            const textEl = document.getElementById('final-quote-text');
+            const container = document.getElementById('final-quotes-carousel');
+            let idx = 0;
+
+            setInterval(() => {
+                container.style.opacity = '0';
+                setTimeout(() => {
+                    idx = (idx + 1) % FINAL_QUOTES.length;
+                    textEl.textContent = `"${FINAL_QUOTES[idx]}"`;
+                    container.style.opacity = '1';
+                }, 1000);
+            }, 6000);
+        }
+    </script>
+</body>
+</html>
